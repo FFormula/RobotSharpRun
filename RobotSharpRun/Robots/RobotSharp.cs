@@ -13,13 +13,13 @@ namespace RobotSharpRun.Robots
 
         protected override bool Compile()
         {
-            RunCommand(@"""{CSC}"" /nologo Program.cs > compiler.out");
+            RunCommand($@"""{CSC}"" /nologo Program.cs > compiler.out");
             return new FileInfo(folder + "compiler.out").Length == 0;
         }
 
         protected override void RunTest(string inFile, string outFile)
         {
-            RunCommand(@"Program.exe < " + inFile + " > " + outFile + " 2>&1");
+            RunCommand($@"Program.exe < {inFile} > {outFile} 2>&1");
         }
     }
 }

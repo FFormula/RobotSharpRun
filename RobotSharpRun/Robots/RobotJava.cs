@@ -15,13 +15,13 @@ namespace RobotSharpRun.Robots
 
         protected override bool Compile()
         {
-            RunCommand(@"""{JAVAC}"" Program.java 2> compiler.out");
+            RunCommand($@"""{JAVAC}"" Program.java 2> compiler.out");
             return new FileInfo(folder + "compiler.out").Length == 0;
         }
 
         protected override void RunTest(string inFile, string outFile)
         {
-            RunCommand(@"""{JAVA}"" Program < " + inFile + " > " + outFile + " 2>&1");
+            RunCommand($@"""{JAVA}"" Program < {inFile} > {outFile} 2>&1");
         }
     }
 }
