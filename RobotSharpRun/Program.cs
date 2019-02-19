@@ -10,19 +10,29 @@
 
     internal sealed class Program
     {
-        private static string BasePath;
+        private string BasePath;
         private const string WaitDirectoryName = @"wait";
         private const string WorkDirectoryName = @"work";
         private const string DoneDirectoryName = @"done";
-        private const int ProcessDelay = 5000;
+        private int ProcessDelay;
+
+        private static FTP ftp;
 
         private static void Main()
         {
-            BasePath = ConfigurationManager.AppSettings["BasePath"];
-            Process();
+            Program program = new Program();
+            program.Process();
         }
 
-        private static void Process()
+        private Program()
+        { 
+            var config = ConfigurationManager.AppSettings;
+            BasePath = config["BasePath"];
+            ProcessDelay = Convert.ToInt32(config["ProcessDelay"]);
+            ftp = new FTP(config["Ftp.Host"], config["Ftp.User"], config["Ftp.Pass"]);
+        }
+
+        private void Process()
         {
             while (true)
             {
@@ -32,7 +42,7 @@
             }
         }
 
-        private static void Work()
+        private void Work()
         {
             foreach (var folder in GetFolders())
             {
@@ -48,24 +58,24 @@
             }
         }
 
-        private static void Ping()
+        private void Ping()
         {
             Console.Write(".");
         }
 
-        private static void Delay()
+        private void Delay()
         {
             Thread.Sleep(ProcessDelay);
         }
 
-        private static IEnumerable<string> GetFolders()
+        private IEnumerable<string> GetFolders()
         {
             return Directory.GetDirectories(
                 Path.Combine(BasePath, WaitDirectoryName))
                     .Select(Path.GetFileName);
         }
 
-        private static void MoveFolder(string folder, string from, string to)
+        private void MoveFolder(string folder, string from, string to)
         {
             Directory.Move(
                 Path.Combine(BasePath, from, folder), 
