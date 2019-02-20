@@ -58,6 +58,7 @@ namespace RobotSharpRun.Robots
             cmd.StartInfo.UseShellExecute = false;
             cmd.Start();
 
+            cmd.StandardInput.WriteLine("chcp 65001");
             cmd.StandardInput.WriteLine(command);
             cmd.StandardInput.Flush();
             cmd.StandardInput.Close();

@@ -14,7 +14,7 @@
         private string WorkFolder; // место где мы размещаем заявки и компилируем их
         private int ProcessDelay;
         private Transport transport;
-        private FTP ftp;
+        private FtpDriver ftp;
 
         private static void Main()
         {
@@ -29,8 +29,11 @@
             ProcessDelay = Convert.ToInt32(config["ProcessDelay"]);
             transport = new Disk(config["Disk.RobotData"]);
 
-            // transport = new Ftp();
-            // ftp = new FTP(config["Ftp.Host"], config["Ftp.User"], config["Ftp.Pass"]);
+            FtpDriver driver = new FtpDriver(
+                config["Ftp.Host"],
+                config["Ftp.User"],
+                config["Ftp.Pass"]);
+            transport = new Ftp(driver);
         }
 
         private void Process()

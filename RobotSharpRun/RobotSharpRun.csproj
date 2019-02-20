@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FTP.cs" />
+    <Compile Include="Transports\FtpDriver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Robots\Robot.cs" />
@@ -52,6 +52,7 @@
     <Compile Include="Robots\RobotNull.cs" />
     <Compile Include="Robots\RobotSharp.cs" />
     <Compile Include="Transports\Disk.cs" />
+    <Compile Include="Transports\Ftp.cs" />
     <Compile Include="Transports\Transport.cs" />
   </ItemGroup>
   <ItemGroup>
