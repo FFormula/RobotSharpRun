@@ -4,17 +4,19 @@
     using System.IO;
     using System.Linq;
     using System.Threading;
-    using System.Configuration;
     using System.Collections.Generic;
     using Transports;
+    using Application;
     using Robots;
 
     internal sealed class Program
     {
         private string WorkFolder; // место где мы размещаем заявки и компилируем их
-        private int ProcessDelay;
+
         private Transport transport;
         private FtpDriver ftp;
+        private readonly IApplicationOptions applicationOptions;
+        private readonly IFtpClientOptions ftpClientOptions;
 
         private static void Main()
         {
@@ -23,16 +25,17 @@
         }
 
         private Program()
-        { 
-            var config = ConfigurationManager.AppSettings;
-            WorkFolder = config["WorkFolder"];
-            ProcessDelay = Convert.ToInt32(config["ProcessDelay"]);
-            transport = new Disk(config["Disk.RobotData"]);
+        {
+            this.applicationOptions = new ApplicationOptions();
+            this.ftpClientOptions = new FtpClientOptions();
+            WorkFolder = this.applicationOptions.WorkFolder;
+
+            transport = new Disk(this.applicationOptions.DiskRobotData);
 
             FtpDriver driver = new FtpDriver(
-                config["Ftp.Host"],
-                config["Ftp.User"],
-                config["Ftp.Pass"]);
+                this.ftpClientOptions.Host,
+                this.ftpClientOptions.User,
+                this.ftpClientOptions.Password);
             transport = new Ftp(driver);
         }
 
@@ -69,7 +72,7 @@
 
         private void Delay()
         {
-            Thread.Sleep(ProcessDelay);
+            Thread.Sleep(this.applicationOptions.ProcessDelay);
         }
     }
 }

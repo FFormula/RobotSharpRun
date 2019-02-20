@@ -45,6 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Transports\FtpDriver.cs" />
+    <Compile Include="Application\ApplicationOptions.cs" />
+    <Compile Include="Application\FtpClientOptions.cs" />
+    <Compile Include="Application\IApplicationOptions.cs" />
+    <Compile Include="Application\IFtpClientOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Robots\Robot.cs" />
