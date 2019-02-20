@@ -6,17 +6,15 @@
     using System.Threading;
     using System.Configuration;
     using System.Collections.Generic;
+    using Transports;
     using Robots;
 
     internal sealed class Program
     {
-        private string BasePath;
-        private const string WaitDirectoryName = @"wait";
-        private const string WorkDirectoryName = @"work";
-        private const string DoneDirectoryName = @"done";
+        private string WorkFolder; // место где мы размещаем заявки и компилируем их
         private int ProcessDelay;
-
-        private static FTP ftp;
+        private Transport transport;
+        private FTP ftp;
 
         private static void Main()
         {
@@ -27,9 +25,12 @@
         private Program()
         { 
             var config = ConfigurationManager.AppSettings;
-            BasePath = config["BasePath"];
+            WorkFolder = config["WorkFolder"];
             ProcessDelay = Convert.ToInt32(config["ProcessDelay"]);
-            ftp = new FTP(config["Ftp.Host"], config["Ftp.User"], config["Ftp.Pass"]);
+            transport = new Disk(config["Disk.RobotData"]);
+
+            // transport = new Ftp();
+            // ftp = new FTP(config["Ftp.Host"], config["Ftp.User"], config["Ftp.Pass"]);
         }
 
         private void Process()
@@ -44,18 +45,18 @@
 
         private void Work()
         {
-            foreach (var folder in GetFolders())
-            {
-                Console.WriteLine();
-                Console.WriteLine($"Working on {folder}");
+            string runkey = transport.GetNextRunkey();
+            if (runkey == null) return;
+            Console.WriteLine($"\nWorking on {runkey}");
 
-                MoveFolder(folder, WaitDirectoryName, WorkDirectoryName);
-                Robot robot = Robot.CreateRobot(Path.Combine(BasePath, WorkDirectoryName, folder));
+            // переместить папку runkey из сервера в рабочую директорию
+            transport.GetWorkFiles(runkey, WorkFolder);
 
-                robot.Start();
+            Robot robot = Robot.CreateRobot(WorkFolder, runkey);
+            robot.Start();
 
-                MoveFolder(folder, WorkDirectoryName, DoneDirectoryName);
-            }
+            // переместить файлы из рабочей директории обратно на сервер
+            transport.PutDoneFiles(runkey, WorkFolder);
         }
 
         private void Ping()
@@ -66,20 +67,6 @@
         private void Delay()
         {
             Thread.Sleep(ProcessDelay);
-        }
-
-        private IEnumerable<string> GetFolders()
-        {
-            return Directory.GetDirectories(
-                Path.Combine(BasePath, WaitDirectoryName))
-                    .Select(Path.GetFileName);
-        }
-
-        private void MoveFolder(string folder, string from, string to)
-        {
-            Directory.Move(
-                Path.Combine(BasePath, from, folder), 
-                Path.Combine(BasePath, to, folder));
         }
     }
 }

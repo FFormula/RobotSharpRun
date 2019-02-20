@@ -7,11 +7,17 @@ namespace RobotSharpRun.Robots
 {
     abstract class Robot
     {
-        protected string folder;
+        protected string runFolder;
 
-        public static Robot CreateRobot(string folder)
+        public static Robot CreateRobot(string workFolder, string apikey)
         {
-            return SelectRobot(Path.GetExtension(folder)).setFolder(folder);
+            return SelectRobot(Path.GetExtension(apikey)).setRunFolder(workFolder + apikey);
+        }
+
+        protected Robot setRunFolder(string runFolder)
+        {
+            this.runFolder = runFolder + (runFolder.EndsWith("\\") ? "" : "\\");
+            return this;
         }
 
         protected string GetSettings(string name)
@@ -29,28 +35,22 @@ namespace RobotSharpRun.Robots
             }
         }
 
-        protected Robot setFolder (string folder)
-        {
-            this.folder = folder + (folder.EndsWith("\\") ? "" : "\\");
-            return this;
-        }
-
         public void Start() // Template Method
         {
             if (Compile())
-                foreach (string file in Directory.GetFiles(folder, "*.in"))
+                foreach (string file in Directory.GetFiles(runFolder, "*.in"))
                     RunTest(
                         Path.GetFileName(file),
                         Path.GetFileName(file).Replace(".in", ".out"));
             else
-                Console.WriteLine(File.ReadAllText(folder + "/compiler.out"));
+                Console.WriteLine(File.ReadAllText(runFolder + "/compiler.out"));
         }
 
         protected void RunCommand(string command)
         {
             Console.WriteLine("# " + command);
             Process cmd = new Process();
-            cmd.StartInfo.WorkingDirectory = folder;
+            cmd.StartInfo.WorkingDirectory = runFolder;
             cmd.StartInfo.FileName = "cmd.exe";
             cmd.StartInfo.RedirectStandardInput = true;
             cmd.StartInfo.RedirectStandardOutput = true;

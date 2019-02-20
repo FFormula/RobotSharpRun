@@ -6,7 +6,7 @@ namespace RobotSharpRun.Robots
     {
         protected override bool Compile()
         {
-            File.WriteAllText(folder + "compiler.out", "Error: This Programing Language does not supported");
+            File.WriteAllText(runFolder + "compiler.out", "Error: This Programing Language does not supported");
             return false;
         }
 

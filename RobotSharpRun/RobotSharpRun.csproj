@@ -51,6 +51,8 @@
     <Compile Include="Robots\RobotJava.cs" />
     <Compile Include="Robots\RobotNull.cs" />
     <Compile Include="Robots\RobotSharp.cs" />
+    <Compile Include="Transports\Disk.cs" />
+    <Compile Include="Transports\Transport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
