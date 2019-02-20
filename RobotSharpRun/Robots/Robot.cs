@@ -67,7 +67,8 @@ namespace RobotSharpRun.Robots
             cmd.StandardInput.WriteLine(command);
             cmd.StandardInput.Flush();
             cmd.StandardInput.Close();
-            cmd.WaitForExit();
+            if (!cmd.WaitForExit(3000))
+                cmd.Kill();
         }
 
         protected bool HasForbiddenWords(string filename, string forbidden)
