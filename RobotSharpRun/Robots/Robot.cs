@@ -8,6 +8,8 @@ namespace RobotSharpRun.Robots
     abstract class Robot
     {
         protected string runFolder;
+        protected string program;
+        protected string forbidden;
 
         public static Robot CreateRobot(string workFolder, string apikey)
         {
@@ -37,13 +39,16 @@ namespace RobotSharpRun.Robots
 
         public void Start() // Template Method
         {
+            if (HasForbiddenWords(runFolder + program, forbidden))
+                File.WriteAllText(runFolder + "/compiler.out",
+                    "Your program contains forbidden words: " + forbidden);
+            else
             if (Compile())
                 foreach (string file in Directory.GetFiles(runFolder, "*.in"))
                     RunTest(
                         Path.GetFileName(file),
                         Path.GetFileName(file).Replace(".in", ".out"));
-            else
-                Console.WriteLine(File.ReadAllText(runFolder + "/compiler.out"));
+            Console.WriteLine(File.ReadAllText(runFolder + "/compiler.out"));
         }
 
         protected void RunCommand(string command)
@@ -63,6 +68,15 @@ namespace RobotSharpRun.Robots
             cmd.StandardInput.Flush();
             cmd.StandardInput.Close();
             cmd.WaitForExit();
+        }
+
+        protected bool HasForbiddenWords(string filename, string forbidden)
+        {
+            string source = File.ReadAllText(filename);
+            foreach (string word in forbidden.Split())
+                if (source.Contains(word))
+                    return true;
+            return false;
         }
 
         abstract protected bool Compile();
