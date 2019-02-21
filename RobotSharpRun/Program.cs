@@ -8,6 +8,8 @@
     {
         private static void Main()
         {
+            Log.get().Info("Start");
+
             var service = ApplicationService.Create(
                 new Logger(),
                 new TransportFactory(

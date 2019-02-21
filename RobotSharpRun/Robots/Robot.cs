@@ -1,6 +1,5 @@
 ﻿namespace RobotSharpRun.Robots
 {
-    using System;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -28,6 +27,8 @@
                 {
                     foreach (var file in Directory.GetFiles(runFolder, "*.in"))
                     {
+                        Log.get().Debug("Program:\n" + File.ReadAllText(runFolder + program));
+
                         RunTest(
                             Path.GetFileName(file),
                             Path.GetFileName(file).Replace(".in", ".out"));
@@ -35,12 +36,11 @@
                 }
             }
 
-            Console.WriteLine(File.ReadAllText(runFolder + "/compiler.out"));
         }
 
         protected void RunCommand(string command)
         {
-            Console.WriteLine("# " + command);
+            Log.get().Info("RunCommand: " + command);
 
             var cmd = new Process
             {
@@ -64,6 +64,7 @@
 
             if (!cmd.WaitForExit(3000))
             {
+                Log.get().Info("Timeout");
                 cmd.Kill();
             }
         }

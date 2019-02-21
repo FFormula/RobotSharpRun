@@ -25,6 +25,8 @@
                         this.ftpClientOptions.User,
                         this.ftpClientOptions.Password);
 
+                    Log.get().Info("Transport: FTP on " + driver.host);
+
                     return new Ftp(driver);
                 default:
                     return new Disk(this.applicationOptions.DiskRobotData);

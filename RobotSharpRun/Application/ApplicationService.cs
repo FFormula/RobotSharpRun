@@ -1,5 +1,6 @@
 ﻿namespace RobotSharpRun.Application
 {
+    using System;
     using System.IO;
     using System.Threading;
     using Robots;
@@ -29,7 +30,6 @@
                     logger,
                     transportFactory,
                     applicationOptions,
-                    ftpClientOptions,
                     robotFactory);
             }
 
@@ -40,7 +40,6 @@
             ILogger logger,
             ITransportFactory transportFactory,
             IApplicationOptions applicationOptions,
-            IFtpClientOptions ftpClientOptions,
             IRobotFactory robotFactory)
         {
             this.logger = logger;
@@ -49,6 +48,9 @@
 
             this.transport = transportFactory
                 .Create(this.applicationOptions.TransportType);
+
+            Log.get().Info("WorkFolder: " + this.applicationOptions.WorkFolder);
+            Log.get().Info("ProcessDelay: " + this.applicationOptions.ProcessDelay);
         }
 
         public void Run()
@@ -70,27 +72,36 @@
 
         private void Work()
         {
-            var runkey = this.transport
-                .GetNextRunkey();
+            string runkey = null;
 
-            if (runkey == null)
+            try
             {
-                return;
+                runkey = this.transport
+                    .GetNextRunkey();
+
+                if (runkey == null)
+                {
+                    return;
+                }
+
+                this.logger.Log($"\nWorking on {runkey}");
+
+                // переместить папку runkey из сервера в рабочую директорию
+                this.transport.GetWorkFiles(runkey, Path.Combine(this.applicationOptions.DiskRobotData, this.applicationOptions.WorkFolder));
+
+                var language = Path.GetExtension(runkey);
+                var robot = this.robotFactory.Create(language);
+                var runFolder = Path.Combine(this.applicationOptions.DiskRobotData, this.applicationOptions.WorkFolder, runkey); // TODO: refactor 'work' folder
+
+                robot.Run(runFolder);
+
+                // переместить файлы из рабочей директории обратно на сервер
+                this.transport.PutDoneFiles(runkey, Path.Combine(this.applicationOptions.DiskRobotData, this.applicationOptions.WorkFolder));
             }
-
-            this.logger.Log($"\nWorking on {runkey}");
-
-            // переместить папку runkey из сервера в рабочую директорию
-            this.transport.GetWorkFiles(runkey, Path.Combine(this.applicationOptions.DiskRobotData, this.applicationOptions.WorkFolder));
-
-            var language = Path.GetExtension(runkey);
-            var robot = this.robotFactory.Create(language);
-            var runFolder = Path.Combine(this.applicationOptions.DiskRobotData, this.applicationOptions.WorkFolder, runkey); // TODO: refactor 'work' folder
-
-            robot.Run(runFolder);
-
-            // переместить файлы из рабочей директории обратно на сервер
-            this.transport.PutDoneFiles(runkey, Path.Combine(this.applicationOptions.DiskRobotData, this.applicationOptions.WorkFolder));
+            catch (Exception ex)
+            {
+                Log.get().Error(ex, ex.Message + "\n" + ex.StackTrace);
+            }
         }
 
         private void Ping()
