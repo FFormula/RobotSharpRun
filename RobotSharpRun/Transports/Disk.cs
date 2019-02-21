@@ -10,6 +10,19 @@
         public Disk(string TasksFolder)
         {
             this.TasksFolder = TasksFolder;
+            CreateFolders();
+        }
+
+        private void CreateFolders()
+        {
+            CreateMissedFolder(TasksFolder + "wait");
+            CreateMissedFolder(TasksFolder + "done");
+        }
+
+        private void CreateMissedFolder(string folder)
+        {
+            if (!Directory.Exists(folder))
+                 Directory.CreateDirectory(folder);
         }
 
         public string GetNextRunkey()

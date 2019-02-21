@@ -35,7 +35,7 @@
 
         public override string ToString()
         {
-            return "Disk at " + driver.host;
+            return "Ftp at " + driver.host;
         }
     }
 }
