@@ -3,7 +3,7 @@
     using System.IO;
     using System.Linq;
 
-    class Disk : Transport
+    internal sealed class Disk : ITransport
     {
         private string RobotData;
 

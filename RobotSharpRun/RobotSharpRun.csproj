@@ -44,6 +44,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\ApplicationService.cs" />
+    <Compile Include="Application\ILogger.cs" />
+    <Compile Include="Application\Logger.cs" />
+    <Compile Include="Robots\IRobot.cs" />
+    <Compile Include="Robots\IRobotFactory.cs" />
+    <Compile Include="Robots\IRobotJavaOptions.cs" />
+    <Compile Include="Robots\IRobotSharpOptions.cs" />
+    <Compile Include="Robots\RobotFactory.cs" />
+    <Compile Include="Robots\RobotJavaOptions.cs" />
+    <Compile Include="Robots\RobotSharpOptions.cs" />
     <Compile Include="Transports\FtpDriver.cs" />
     <Compile Include="Application\ApplicationOptions.cs" />
     <Compile Include="Application\FtpClientOptions.cs" />
@@ -57,7 +67,9 @@
     <Compile Include="Robots\RobotSharp.cs" />
     <Compile Include="Transports\Disk.cs" />
     <Compile Include="Transports\Ftp.cs" />
+    <Compile Include="Transports\ITransportFactory.cs" />
     <Compile Include="Transports\Transport.cs" />
+    <Compile Include="Transports\TransportFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

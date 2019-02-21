@@ -1,75 +1,25 @@
 ﻿namespace RobotSharpRun
 {
-    using System;
-    using System.Threading;
-    using Transports;
     using Application;
     using Robots;
+    using Transports;
 
     internal sealed class Program
     {
-        private string WorkFolder; // место где мы размещаем заявки и компилируем их
-
-        private Transport transport;
-        private FtpDriver ftp;
-        private readonly IApplicationOptions applicationOptions;
-        private readonly IFtpClientOptions ftpClientOptions;
-
         private static void Main()
         {
-            Program program = new Program();
-            program.Process();
-        }
+            var service = ApplicationService.Create(
+                new Logger(),
+                new TransportFactory(
+                    new ApplicationOptions(),
+                    new FtpClientOptions()),
+                new ApplicationOptions(),
+                new FtpClientOptions(),
+                new RobotFactory(
+                    new RobotSharpOptions(),
+                    new RobotJavaOptions()));
 
-        private Program()
-        {
-            this.applicationOptions = new ApplicationOptions();
-            this.ftpClientOptions = new FtpClientOptions();
-            WorkFolder = this.applicationOptions.WorkFolder;
-
-            transport = new Disk(this.applicationOptions.DiskRobotData);
-
-            FtpDriver driver = new FtpDriver(
-                this.ftpClientOptions.Host,
-                this.ftpClientOptions.User,
-                this.ftpClientOptions.Password);
-            transport = new Ftp(driver);
-        }
-
-        private void Process()
-        {
-            while (true)
-            {
-                Ping();
-                Work();
-                Delay();
-            }
-        }
-
-        private void Work()
-        {
-            string runkey = transport.GetNextRunkey();
-            if (runkey == null) return;
-            Console.WriteLine($"\nWorking on {runkey}");
-
-            // переместить папку runkey из сервера в рабочую директорию
-            transport.GetWorkFiles(runkey, WorkFolder);
-
-            Robot robot = Robot.CreateRobot(WorkFolder, runkey);
-            robot.Start();
-
-            // переместить файлы из рабочей директории обратно на сервер
-            transport.PutDoneFiles(runkey, WorkFolder);
-        }
-
-        private void Ping()
-        {
-            Console.Write(".");
-        }
-
-        private void Delay()
-        {
-            Thread.Sleep(this.applicationOptions.ProcessDelay);
+            service.Run();
         }
     }
 }

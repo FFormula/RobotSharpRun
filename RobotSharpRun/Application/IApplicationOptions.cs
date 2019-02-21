@@ -7,5 +7,7 @@
         string WorkFolder { get; }
 
         string DiskRobotData { get; }
+
+        string TransportType { get; }
     }
 }

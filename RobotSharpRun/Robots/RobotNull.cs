@@ -1,18 +1,12 @@
-﻿using System.IO;
-
-namespace RobotSharpRun.Robots
+﻿namespace RobotSharpRun.Robots
 {
-    class RobotNull : Robot
-    {
-        protected override bool Compile()
-        {
-            File.WriteAllText(runFolder + "compiler.out", "Error: This Programing Language does not supported");
-            return false;
-        }
+    using System.IO;
 
-        protected override void RunTest(string inFile, string outFile)
+    internal sealed class RobotNull : IRobot
+    {
+        public void Run(string runFolder)
         {
-            return;
+            File.WriteAllText(Path.Combine(runFolder, "compiler.out"), "Error: This Programing Language does not supported");
         }
     }
 }

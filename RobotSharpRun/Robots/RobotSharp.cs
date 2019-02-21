@@ -1,22 +1,19 @@
-﻿using System.IO;
-
-namespace RobotSharpRun.Robots
+﻿namespace RobotSharpRun.Robots
 {
-    class RobotSharp : Robot
+    internal sealed class RobotSharp : Robot, IRobot
     {
-        string CSC;
+        private readonly IRobotSharpOptions options;
 
-        public RobotSharp()
+        public RobotSharp(IRobotSharpOptions options)
         {
-            CSC = GetSettings("RobotSharp.CSC");
-            program = "Program.cs";
-            forbidden = GetSettings("RobotSharp.Forbidden");
+            this.options = options;
+            this.program = this.options.ProgramFileName;
+            this.forbidden = this.options.ForbiddenWords;
         }
 
-        protected override bool Compile()
+        protected override void Compile()
         {
-            RunCommand($@"""{CSC}"" /nologo {program} > compiler.out");
-            return new FileInfo(runFolder + "compiler.out").Length == 0;
+            RunCommand($@"""{this.options.Csc}"" /nologo {program} > compiler.out");
         }
 
         protected override void RunTest(string inFile, string outFile)

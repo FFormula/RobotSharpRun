@@ -4,7 +4,7 @@
     using System.IO;
     using System.Net;
 
-    class FtpDriver
+    internal sealed class FtpDriver
     {
         string host;
         string user;
@@ -56,7 +56,8 @@
                 using (Stream reader = File.OpenRead(fromLocalFilename))
                 using (Stream writer = request.GetRequestStream())
                     reader.CopyTo(writer);
-            } catch { }
+            }
+            catch { }
         }
 
         public void MkDir(string folder)

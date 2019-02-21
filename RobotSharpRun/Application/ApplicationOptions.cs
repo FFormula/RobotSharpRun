@@ -10,5 +10,7 @@
         public string WorkFolder => ConfigurationManager.AppSettings["WorkFolder"];
 
         public string DiskRobotData => ConfigurationManager.AppSettings["Disk.RobotData"];
+
+        public string TransportType => ConfigurationManager.AppSettings["Transport.Type"];
     }
 }

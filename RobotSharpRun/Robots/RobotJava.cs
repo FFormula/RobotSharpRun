@@ -1,29 +1,24 @@
-﻿using System.IO;
-
-namespace RobotSharpRun.Robots
+﻿namespace RobotSharpRun.Robots
 {
-    class RobotJava : Robot
+    internal sealed class RobotJava : Robot, IRobot
     {
-        string JAVAC;
-        string JAVA;
+        private readonly IRobotJavaOptions options;
 
-        public RobotJava()
+        public RobotJava(IRobotJavaOptions options)
         {
-            JAVAC = GetSettings("RobotJava.JAVAC");
-            JAVA = GetSettings("RobotJava.JAVA");
-            program = "Program.java";
-            forbidden = GetSettings("RobotJava.Forbidden");
+            this.options = options;
+            this.program = this.options.ProgramFileName;
+            this.forbidden = this.options.ForbiddenWords;
         }
 
-        protected override bool Compile()
+        protected override void Compile()
         {
-            RunCommand($@"""{JAVAC}"" {program} 2> compiler.out");
-            return new FileInfo(runFolder + "compiler.out").Length == 0;
+            RunCommand($@"""{this.options.JavaC}"" {program} 2> compiler.out");
         }
 
         protected override void RunTest(string inFile, string outFile)
         {
-            RunCommand($@"""{JAVA}"" -Dfile.encoding=UTF-8 Program < {inFile} > {outFile} 2>&1");
+            RunCommand($@"""{this.options.Java}"" -Dfile.encoding=UTF-8 Program < {inFile} > {outFile} 2>&1");
         }
     }
 }
