@@ -2,14 +2,13 @@
 {
     using System;
     using System.Threading;
-    using System.Configuration;
     using Transports;
     using Robots;
 
     internal sealed class Program
     {
         private readonly string WorkFolder; // место где мы размещаем заявки и компилируем их
-        private readonly int ProcessDelay;
+        private readonly int RequestInterval;
         private readonly ITransport transport;
 
         private static void Main()
@@ -30,11 +29,10 @@
         }
 
         private Program()
-        { 
-            var config = ConfigurationManager.AppSettings;
-            WorkFolder = config["WorkFolder"];                          Log.get().Info("WorkFolder: " + WorkFolder);
-            ProcessDelay = Convert.ToInt32(config["ProcessDelay"]);     Log.get().Info("ProcessDelay: " + ProcessDelay);
-            transport = TransportFactory.Create();                      Log.get().Info("Transport: " + transport);
+        {
+            WorkFolder = Properties.Settings.Default.AppWorkFolder;             Log.get().Info("WorkFolder: " + WorkFolder);
+            RequestInterval = Properties.Settings.Default.AppRequestInterval;   Log.get().Info("ProcessDelay: " + RequestInterval);
+            transport = TransportFactory.Create();                              Log.get().Info("Transport: " + transport);
         }
 
         private void Work()
@@ -69,7 +67,7 @@
 
         private void Delay()
         {
-            Thread.Sleep(ProcessDelay);
+            Thread.Sleep(RequestInterval);
         }
     }
 }

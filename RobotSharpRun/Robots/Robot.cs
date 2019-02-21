@@ -7,8 +7,8 @@
     abstract class Robot
     {
         protected string runFolder;
-        protected string program;
-        protected string forbidden;
+        protected string SourceFile;
+        protected string DenyWords;
 
         public static Robot CreateRobot(string workFolder, string apikey)
         {
@@ -30,19 +30,24 @@
         {
             switch (langId)
             {
-                case ".java": return new RobotJava();
-                case ".cs": return new RobotSharp();
+                case ".java": return new RobotJava(
+                                            Properties.Settings.Default.RobotJavaJavacExe,
+                                            Properties.Settings.Default.RobotJavaJavaExe,
+                                            Properties.Settings.Default.RobotJavaDenyWords);
+                case ".cs": return new RobotSharp(
+                                            Properties.Settings.Default.RobotSharpCscExe,
+                                            Properties.Settings.Default.RobotSharpDenyWords);
                 default: return new RobotNull();
             }
         }
 
         public void Start() // Template Method
         {
-            Log.get().Debug("Program:\n" + File.ReadAllText(runFolder + program));
+            Log.get().Debug("Source:\n" + File.ReadAllText(runFolder + SourceFile));
 
-            if (HasForbiddenWords(runFolder + program, forbidden))
+            if (HasForbiddenWords(runFolder + SourceFile, DenyWords))
                 File.WriteAllText(runFolder + "/compiler.out",
-                    "Your program contains forbidden words: " + forbidden);
+                    "Your program contains forbidden words: " + DenyWords);
             else
             if (Compile())
                 foreach (string file in Directory.GetFiles(runFolder, "*.in"))

@@ -5,11 +5,11 @@
 
     class Disk : ITransport
     {
-        public readonly string RobotTasks;
+        public readonly string TasksFolder;
 
-        public Disk(string RobotTasks)
+        public Disk(string TasksFolder)
         {
-            this.RobotTasks = RobotTasks;
+            this.TasksFolder = TasksFolder;
         }
 
         public string GetNextRunkey()
@@ -17,7 +17,7 @@
             try
             {
                 return Directory.GetDirectories(
-                    Path.Combine(RobotTasks, "wait"))
+                    Path.Combine(TasksFolder, "wait"))
                         .Select(Path.GetFileName)
                         .First();
             }
@@ -30,7 +30,7 @@
         public void GetWorkFiles(string runkey, string toFolder)
         {
             Directory.Move(
-                Path.Combine(RobotTasks, "wait", runkey),
+                Path.Combine(TasksFolder, "wait", runkey),
                 Path.Combine(toFolder, runkey));
         }
 
@@ -38,12 +38,12 @@
         {
             Directory.Move(
                 Path.Combine(fromFolder, runkey),
-                Path.Combine(RobotTasks, "done", runkey));
+                Path.Combine(TasksFolder, "done", runkey));
         }
 
         public override string ToString()
         {
-            return "Disk at " + RobotTasks;
+            return "Disk at " + TasksFolder;
         }
     }
 }

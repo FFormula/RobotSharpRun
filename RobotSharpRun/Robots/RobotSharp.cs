@@ -4,18 +4,18 @@
 
     class RobotSharp : Robot
     {
-        string CSC;
+        private readonly string CscExe;
 
-        public RobotSharp()
+        public RobotSharp(string CscExe, string DenyWords)
         {
-            CSC = GetSettings("RobotSharp.CSC");
-            program = "Program.cs";
-            forbidden = GetSettings("RobotSharp.Forbidden");
+            this.CscExe = CscExe;
+            SourceFile = "Program.cs";
+            this.DenyWords = DenyWords;
         }
 
         protected override bool Compile()
         {
-            RunCommand($@"""{CSC}"" /nologo {program} > compiler.out");
+            RunCommand($@"""{CscExe}"" /nologo {SourceFile} > compiler.out");
             return new FileInfo(runFolder + "compiler.out").Length == 0;
         }
 

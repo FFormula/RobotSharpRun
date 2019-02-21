@@ -1,23 +1,19 @@
 ﻿namespace RobotSharpRun.Transports
 {
-    using System.Configuration;
-
     static class TransportFactory
     {
         public static ITransport Create()
         {
-            var config = ConfigurationManager.AppSettings;
-            switch (config["transport"])
+            switch (Properties.Settings.Default.TransportClass)
             {
                 case "Ftp":
-                            FtpDriver driver = new FtpDriver(
-                                config["Ftp.Host"],
-                                config["Ftp.User"],
-                                config["Ftp.Pass"]);
-                            return new Ftp(driver);
+                            return new Ftp(new FtpDriver(
+                                    Properties.Settings.Default.TransportFtpHost,
+                                    Properties.Settings.Default.TransportFtpUser,
+                                    Properties.Settings.Default.TransportFtpPass));
                 case "Disk":
                 default:
-                            return new Disk(config["Disk.RobotTasks"]);
+                            return new Disk(Properties.Settings.Default.TransportDiskTasksFolder);
             }
         }
     }
