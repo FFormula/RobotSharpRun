@@ -1,6 +1,6 @@
 ﻿namespace RobotSharpRun.Transports
 {
-    interface Transport
+    interface ITransport
     {
         string GetNextRunkey();
         void GetWorkFiles(string runkey, string toFolder);

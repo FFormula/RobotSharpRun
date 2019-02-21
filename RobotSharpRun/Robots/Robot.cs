@@ -1,6 +1,5 @@
 ﻿namespace RobotSharpRun.Robots
 {
-    using System;
     using System.Configuration;
     using System.Diagnostics;
     using System.IO;
@@ -13,10 +12,10 @@
 
         public static Robot CreateRobot(string workFolder, string apikey)
         {
-            return SelectRobot(Path.GetExtension(apikey)).setRunFolder(workFolder + apikey);
+            return SelectRobot(Path.GetExtension(apikey)).SetRunFolder(workFolder + apikey);
         }
 
-        protected Robot setRunFolder(string runFolder)
+        protected Robot SetRunFolder(string runFolder)
         {
             this.runFolder = runFolder + (runFolder.EndsWith("\\") ? "" : "\\");
             return this;

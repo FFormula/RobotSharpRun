@@ -2,7 +2,7 @@
 {
     using System.IO;
 
-    class Ftp : Transport
+    class Ftp : ITransport
     {
         FtpDriver driver;
 
@@ -31,6 +31,11 @@
             foreach (string fileOut in Directory.GetFiles(fromFolder + runkey, "*.out"))
                 driver.Put(fileOut, "work/" + runkey + "/" + Path.GetFileName(fileOut));
             driver.Rename("work/" + runkey, "../done/" + runkey);
+        }
+
+        public override string ToString()
+        {
+            return "Disk at " + driver.host;
         }
     }
 }

@@ -3,13 +3,13 @@
     using System.IO;
     using System.Linq;
 
-    class Disk : Transport
+    class Disk : ITransport
     {
-        private string RobotData;
+        public readonly string RobotTasks;
 
-        public Disk(string RobotData)
+        public Disk(string RobotTasks)
         {
-            this.RobotData = RobotData;
+            this.RobotTasks = RobotTasks;
         }
 
         public string GetNextRunkey()
@@ -17,7 +17,7 @@
             try
             {
                 return Directory.GetDirectories(
-                    Path.Combine(RobotData, "wait"))
+                    Path.Combine(RobotTasks, "wait"))
                         .Select(Path.GetFileName)
                         .First();
             }
@@ -30,7 +30,7 @@
         public void GetWorkFiles(string runkey, string toFolder)
         {
             Directory.Move(
-                Path.Combine(RobotData, "wait", runkey),
+                Path.Combine(RobotTasks, "wait", runkey),
                 Path.Combine(toFolder, runkey));
         }
 
@@ -38,7 +38,12 @@
         {
             Directory.Move(
                 Path.Combine(fromFolder, runkey),
-                Path.Combine(RobotData, "done", runkey));
+                Path.Combine(RobotTasks, "done", runkey));
+        }
+
+        public override string ToString()
+        {
+            return "Disk at " + RobotTasks;
         }
     }
 }
