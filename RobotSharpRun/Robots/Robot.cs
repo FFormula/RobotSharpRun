@@ -1,10 +1,10 @@
-﻿using System;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-
-namespace RobotSharpRun.Robots
+﻿namespace RobotSharpRun.Robots
 {
+    using System;
+    using System.Configuration;
+    using System.Diagnostics;
+    using System.IO;
+
     abstract class Robot
     {
         protected string runFolder;
@@ -39,6 +39,8 @@ namespace RobotSharpRun.Robots
 
         public void Start() // Template Method
         {
+            Log.get().Debug("Program:\n" + File.ReadAllText(runFolder + program));
+
             if (HasForbiddenWords(runFolder + program, forbidden))
                 File.WriteAllText(runFolder + "/compiler.out",
                     "Your program contains forbidden words: " + forbidden);
@@ -48,12 +50,13 @@ namespace RobotSharpRun.Robots
                     RunTest(
                         Path.GetFileName(file),
                         Path.GetFileName(file).Replace(".in", ".out"));
-            Console.WriteLine(File.ReadAllText(runFolder + "/compiler.out"));
+
+            Log.get().Debug("Compiler:\n" + File.ReadAllText(runFolder + "/compiler.out"));
         }
 
         protected void RunCommand(string command)
         {
-            Console.WriteLine("# " + command);
+            Log.get().Info("RunCommand: " + command);
             Process cmd = new Process();
             cmd.StartInfo.WorkingDirectory = runFolder;
             cmd.StartInfo.FileName = "cmd.exe";
@@ -68,7 +71,10 @@ namespace RobotSharpRun.Robots
             cmd.StandardInput.Flush();
             cmd.StandardInput.Close();
             if (!cmd.WaitForExit(3000))
+            {
+                Log.get().Info("Timeout");
                 cmd.Kill();
+            }
         }
 
         protected bool HasForbiddenWords(string filename, string forbidden)

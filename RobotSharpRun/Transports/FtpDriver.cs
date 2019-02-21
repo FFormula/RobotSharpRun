@@ -6,9 +6,9 @@
 
     class FtpDriver
     {
-        string host;
-        string user;
-        string pass;
+        public readonly string host;
+        private string user;
+        private string pass;
 
         FtpWebRequest request;
 
@@ -56,7 +56,9 @@
                 using (Stream reader = File.OpenRead(fromLocalFilename))
                 using (Stream writer = request.GetRequestStream())
                     reader.CopyTo(writer);
-            } catch { }
+            } catch {
+                Log.get().Error("Error reading file: " + fromLocalFilename);
+            }
         }
 
         public void MkDir(string folder)

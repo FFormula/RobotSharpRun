@@ -1,7 +1,7 @@
-﻿using System.IO;
-
-namespace RobotSharpRun.Robots
+﻿namespace RobotSharpRun.Robots
 {
+    using System.IO;
+
     class RobotSharp : Robot
     {
         string CSC;

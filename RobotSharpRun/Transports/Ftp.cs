@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-
-namespace RobotSharpRun.Transports
+﻿namespace RobotSharpRun.Transports
 {
+    using System.IO;
+
     class Ftp : Transport
     {
         FtpDriver driver;
