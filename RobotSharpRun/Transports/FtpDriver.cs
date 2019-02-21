@@ -50,10 +50,13 @@
 
         public void Put(string fromLocalFilename, string toFtpFilename)
         {
-            connect(toFtpFilename, WebRequestMethods.Ftp.UploadFile);
-            using (Stream reader = File.OpenRead(fromLocalFilename))
-            using (Stream writer = request.GetRequestStream())
-                reader.CopyTo(writer);
+            try
+            {
+                connect(toFtpFilename, WebRequestMethods.Ftp.UploadFile);
+                using (Stream reader = File.OpenRead(fromLocalFilename))
+                using (Stream writer = request.GetRequestStream())
+                    reader.CopyTo(writer);
+            } catch { }
         }
 
         public void MkDir(string folder)

@@ -9,11 +9,13 @@ namespace RobotSharpRun.Robots
         public RobotSharp()
         {
             CSC = GetSettings("RobotSharp.CSC");
+            program = "Program.cs";
+            forbidden = GetSettings("RobotSharp.Forbidden");
         }
 
         protected override bool Compile()
         {
-            RunCommand($@"""{CSC}"" /nologo Program.cs > compiler.out");
+            RunCommand($@"""{CSC}"" /nologo {program} > compiler.out");
             return new FileInfo(runFolder + "compiler.out").Length == 0;
         }
 
