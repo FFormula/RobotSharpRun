@@ -31,7 +31,7 @@
         private Program()
         {
             WorkFolder = Properties.Settings.Default.AppWorkFolder;             Log.get().Info("WorkFolder: " + WorkFolder);
-            RequestInterval = Properties.Settings.Default.AppRequestInterval;   Log.get().Info("ProcessDelay: " + RequestInterval);
+            RequestInterval = Properties.Settings.Default.AppRequestInterval;   Log.get().Info("RequestInterval: " + RequestInterval);
             transport = TransportFactory.Create();                              Log.get().Info("Transport: " + transport);
         }
 
