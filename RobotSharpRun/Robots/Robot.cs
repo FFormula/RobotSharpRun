@@ -6,39 +6,14 @@
 
     abstract class Robot
     {
-        protected string runFolder;
-        protected string SourceFile;
-        protected string DenyWords;
-
-        public static Robot CreateRobot(string workFolder, string apikey)
-        {
-            return SelectRobot(Path.GetExtension(apikey)).SetRunFolder(workFolder + apikey);
-        }
+        protected readonly string RunFolder;
+        protected readonly string SourceFile;
+        protected readonly string DenyWords;
 
         protected Robot SetRunFolder(string runFolder)
         {
             this.runFolder = runFolder + (runFolder.EndsWith("\\") ? "" : "\\");
             return this;
-        }
-
-        protected string GetSettings(string name)
-        {
-            return ConfigurationManager.AppSettings[name];
-        }
-
-        private static Robot SelectRobot(string langId)
-        {
-            switch (langId)
-            {
-                case ".java": return new RobotJava(
-                                            Properties.Settings.Default.RobotJavaJavacExe,
-                                            Properties.Settings.Default.RobotJavaJavaExe,
-                                            Properties.Settings.Default.RobotJavaDenyWords);
-                case ".cs": return new RobotSharp(
-                                            Properties.Settings.Default.RobotSharpCscExe,
-                                            Properties.Settings.Default.RobotSharpDenyWords);
-                default: return new RobotNull();
-            }
         }
 
         public void Start() // Template Method
@@ -56,29 +31,6 @@
                         Path.GetFileName(file).Replace(".in", ".out"));
 
             Log.get().Debug("Compiler:\n" + File.ReadAllText(runFolder + "/compiler.out"));
-        }
-
-        protected void RunCommand(string command)
-        {
-            Log.get().Info("RunCommand: " + command);
-            Process cmd = new Process();
-            cmd.StartInfo.WorkingDirectory = runFolder;
-            cmd.StartInfo.FileName = "cmd.exe";
-            cmd.StartInfo.RedirectStandardInput = true;
-            cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
-            cmd.Start();
-
-            cmd.StandardInput.WriteLine("chcp 65001");
-            cmd.StandardInput.WriteLine(command);
-            cmd.StandardInput.Flush();
-            cmd.StandardInput.Close();
-            if (!cmd.WaitForExit(3000))
-            {
-                Log.get().Info("Timeout");
-                cmd.Kill();
-            }
         }
 
         protected bool HasForbiddenWords(string filename, string forbidden)
