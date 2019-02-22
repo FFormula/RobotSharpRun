@@ -1,29 +1,31 @@
 ﻿namespace RobotSharpRun.Robots
 {
-    using System.IO;
+    using RobotSharpRun.Services;
 
-    class RobotJava : Robot
+    class RobotJava : ARobot
     {
         private readonly string JavacExe;
         private readonly string JavaExe;
 
-        public RobotJava(string JavacExe, string JavaExe, string DenyWords)
+        public RobotJava(CmdDriver cmd, string JavacExe, string JavaExe, string DenyWords)
+            : base (cmd, 
+                  "Program.java", 
+                  "Program.class", 
+                  DenyWords)
         {
             this.JavacExe = JavacExe;
             this.JavaExe = JavaExe;
-            this.DenyWords = DenyWords;
-            this.SourceFile = "Program.java";
         }
 
-        protected override bool Compile()
+        public override void Compile()
         {
-            RunCommand($@"""{JavacExe}"" {SourceFile} 2> compiler.out");
-            return new FileInfo(runFolder + "compiler.out").Length == 0;
+            cmd.Run($@"""{JavacExe}"" {SourceFile} 2> {CompilerOut}");
         }
 
-        protected override void RunTest(string inFile, string outFile)
+        public override void RunTest(string inFile, string outFile)
         {
-            RunCommand($@"""{JavaExe}"" -Dfile.encoding=UTF-8 Program < {inFile} > {outFile} 2>&1");
+            cmd.Run($@"""{JavaExe}"" -Dfile.encoding=UTF-8 Program < {inFile} > {outFile} 2>&1");
         }
+
     }
 }

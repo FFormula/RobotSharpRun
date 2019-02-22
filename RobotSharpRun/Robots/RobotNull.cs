@@ -1,18 +1,16 @@
 ﻿namespace RobotSharpRun.Robots
 {
-    using System.IO;
+    using RobotSharpRun.Services;
 
-    class RobotNull : Robot
+    class RobotNull : ARobot
     {
-        protected override bool Compile()
+        public RobotNull(CmdDriver cmd) : base(cmd, "", "", "") { }
+
+        public override void Compile()
         {
-            File.WriteAllText(runFolder + "compiler.out", "Error: This Programing Language does not supported");
-            return false;
+            cmd.Run("echo 'Error: This Programing Language does not supported' > compiler.out");
         }
 
-        protected override void RunTest(string inFile, string outFile)
-        {
-            return;
-        }
+        public override void RunTest(string inFile, string outFile) { }
     }
 }

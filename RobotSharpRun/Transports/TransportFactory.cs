@@ -1,5 +1,7 @@
 ﻿namespace RobotSharpRun.Transports
 {
+    using RobotSharpRun.Services;
+
     static class TransportFactory
     {
         public static ITransport Create()

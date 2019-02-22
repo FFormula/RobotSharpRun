@@ -12,7 +12,7 @@ namespace RobotSharpRun.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -62,7 +62,7 @@ namespace RobotSharpRun.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Java\\jdk1.8.0_181\\bin\\java.exe")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Java\\jdk1.8.0_201\\bin\\java.exe")]
         public string RobotJavaJavaExe {
             get {
                 return ((string)(this["RobotJavaJavaExe"]));
@@ -129,6 +129,15 @@ namespace RobotSharpRun.Properties {
         public string TransportFtpPass {
             get {
                 return ((string)(this["TransportFtpPass"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3000")]
+        public int RobotRunTestTimeout {
+            get {
+                return ((int)(this["RobotRunTestTimeout"]));
             }
         }
     }

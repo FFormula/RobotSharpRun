@@ -1,5 +1,6 @@
 ﻿namespace RobotSharpRun.Transports
 {
+    using RobotSharpRun.Services;
     using System.IO;
 
     class Ftp : ITransport

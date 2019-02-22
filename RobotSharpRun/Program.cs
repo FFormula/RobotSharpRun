@@ -3,7 +3,9 @@
     using System;
     using System.Threading;
     using Transports;
-    using Robots;
+    using RobotSharpRun.Services;
+    using RobotSharpRun.Robots;
+    using System.IO;
 
     internal sealed class Program
     {
@@ -45,11 +47,13 @@
                 if (runkey == null) return;
                 Console.WriteLine();                                    Log.get().Info("Runkey: " + runkey);
 
+                // TODO: Empty target runkey folder
+
                 // переместить папку runkey из сервера в рабочую директорию
                 transport.GetWorkFiles(runkey, WorkFolder);
 
-                Robot robot = Robot.CreateRobot(WorkFolder, runkey);
-                robot.Start();
+                Tester tester = new Tester(runkey, WorkFolder);
+                tester.Start();
 
                 // переместить файлы из рабочей директории обратно на сервер
                 transport.PutDoneFiles(runkey, WorkFolder);

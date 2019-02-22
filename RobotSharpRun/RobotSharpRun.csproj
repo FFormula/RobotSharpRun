@@ -51,17 +51,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Log.cs" />
+    <Compile Include="Services\Log.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Services\CmdDriver.cs" />
+    <Compile Include="Robots\ARobot.cs" />
+    <Compile Include="Robots\RobotFactory.cs" />
     <Compile Include="Transports\TransportFactory.cs" />
-    <Compile Include="Transports\FtpDriver.cs" />
+    <Compile Include="Services\FtpDriver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Robots\Robot.cs" />
+    <Compile Include="Robots\Tester.cs" />
     <Compile Include="Robots\RobotJava.cs" />
     <Compile Include="Robots\RobotNull.cs" />
     <Compile Include="Robots\RobotSharp.cs" />

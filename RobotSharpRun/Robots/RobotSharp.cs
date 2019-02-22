@@ -1,27 +1,28 @@
 ﻿namespace RobotSharpRun.Robots
 {
-    using System.IO;
+    using RobotSharpRun.Services;
 
-    class RobotSharp : Robot
+    class RobotSharp : ARobot
     {
         private readonly string CscExe;
 
-        public RobotSharp(string CscExe, string DenyWords)
+        public RobotSharp(CmdDriver cmd, string CscExe, string DenyWords)
+            : base (cmd, 
+                  "Program.cs", 
+                  "Program.exe",
+                  DenyWords)
         {
             this.CscExe = CscExe;
-            SourceFile = "Program.cs";
-            this.DenyWords = DenyWords;
         }
 
-        protected override bool Compile()
+        public override void Compile()
         {
-            RunCommand($@"""{CscExe}"" /nologo {SourceFile} > compiler.out");
-            return new FileInfo(runFolder + "compiler.out").Length == 0;
+            cmd.Run($@"""{CscExe}"" /nologo {SourceFile} > {CompilerOut}");
         }
 
-        protected override void RunTest(string inFile, string outFile)
+        public override void RunTest(string inFile, string outFile)
         {
-            RunCommand($@"Program.exe < {inFile} > {outFile} 2>&1");
+            cmd.Run($@"{ExecFile} < {inFile} > {outFile} 2>&1");
         }
     }
 }
