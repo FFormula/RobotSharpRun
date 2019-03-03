@@ -7,8 +7,8 @@
         private readonly string JavacExe;
         private readonly string JavaExe;
 
-        public RobotJava(CmdDriver cmd, string JavacExe, string JavaExe, string DenyWords)
-            : base (cmd, 
+        public RobotJava(CmdDriver cmd, string RunFolder, string JavacExe, string JavaExe, string DenyWords)
+            : base (cmd, RunFolder,
                   "Program.java", 
                   "Program.class", 
                   DenyWords)

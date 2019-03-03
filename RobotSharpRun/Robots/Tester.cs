@@ -12,7 +12,7 @@
         {
             RunFolder = WorkFolder + runkey + "\\";
             CmdDriver cmd = new CmdDriver(RunFolder, Properties.Settings.Default.RobotRunTestTimeout);
-            Robot = RobotFactory.Create(cmd, runkey);
+            Robot = RobotFactory.Create(cmd, runkey, RunFolder);
         }
 
         public void Start()

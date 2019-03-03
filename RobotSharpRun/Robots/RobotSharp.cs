@@ -6,8 +6,8 @@
     {
         private readonly string CscExe;
 
-        public RobotSharp(CmdDriver cmd, string CscExe, string DenyWords)
-            : base (cmd, 
+        public RobotSharp(CmdDriver cmd, string RunFolder, string CscExe, string DenyWords)
+            : base (cmd, RunFolder,
                   "Program.cs", 
                   "Program.exe",
                   DenyWords)

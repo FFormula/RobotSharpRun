@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Robots\RobotCpp.cs" />
+    <Compile Include="Robots\RobotPascal.cs" />
     <Compile Include="Services\Log.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

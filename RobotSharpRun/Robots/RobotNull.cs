@@ -4,7 +4,7 @@
 
     class RobotNull : ARobot
     {
-        public RobotNull(CmdDriver cmd) : base(cmd, "", "", "") { }
+        public RobotNull(CmdDriver cmd) : base(cmd, "", "", "", "") { }
 
         public override void Compile()
         {

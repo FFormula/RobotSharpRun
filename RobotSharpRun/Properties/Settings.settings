@@ -24,7 +24,7 @@
       <Value Profile="(Default)">.\work\</Value>
     </Setting>
     <Setting Name="TransportClass" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Disk</Value>
+      <Value Profile="(Default)">Ftp</Value>
     </Setting>
     <Setting Name="TransportDiskTasksFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\#Robot\tasks\</Value>
@@ -40,6 +40,18 @@
     </Setting>
     <Setting Name="RobotRunTestTimeout" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">3000</Value>
+    </Setting>
+    <Setting Name="RobotCppGccExe" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\MinGW\bin\g++.exe</Value>
+    </Setting>
+    <Setting Name="RobotCppDenyWords" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">file</Value>
+    </Setting>
+    <Setting Name="RobotPascalFpcExe" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c:\FPC\2.6.4\bin\i386-win32\fpc.exe</Value>
+    </Setting>
+    <Setting Name="RobotPascalDenyWords" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">assign rewrite reset file</Value>
     </Setting>
   </Settings>
 </SettingsFile>
