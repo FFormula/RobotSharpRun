@@ -13,7 +13,7 @@ namespace RobotSharpRun.Services
             this.RobotRunTimeout = RobotRunTimeout;
         }
 
-        public void Run(string command)
+        public void Run(string command, string preCommand = "")
         {
             Log.get().Info("Run: " + RunFolder + "\\" + command);
             Process cmd = new Process();
@@ -25,7 +25,8 @@ namespace RobotSharpRun.Services
             cmd.StartInfo.UseShellExecute = false;
             cmd.Start();
 
-            cmd.StandardInput.WriteLine("chcp 65001");
+            if (preCommand != "")
+                cmd.StandardInput.WriteLine(preCommand);
             cmd.StandardInput.WriteLine(command);
             cmd.StandardInput.Flush();
             cmd.StandardInput.Close();

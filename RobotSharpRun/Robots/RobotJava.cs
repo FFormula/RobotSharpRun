@@ -19,12 +19,12 @@
 
         public override void Compile()
         {
-            cmd.Run($@"""{JavacExe}"" {SourceFile} 2> {CompilerOut}");
+            cmd.Run($@"""{JavacExe}"" {SourceFile} 2> {CompilerOut}", "chcp 65001");
         }
 
         public override void RunTest(string inFile, string outFile)
         {
-            cmd.Run($@"""{JavaExe}"" -Dfile.encoding=UTF-8 Program < {inFile} > {outFile} 2>&1");
+            cmd.Run($@"""{JavaExe}"" -Dfile.encoding=UTF-8 Program < {inFile} > {outFile} 2>&1", "chcp 65001");
         }
 
     }

@@ -17,12 +17,12 @@
 
         public override void Compile()
         {
-            cmd.Run($@"""{CscExe}"" /nologo {SourceFile} > {CompilerOut}");
+            cmd.Run($@"""{CscExe}"" /nologo {SourceFile} > {CompilerOut}", "chcp 855");
         }
 
         public override void RunTest(string inFile, string outFile)
         {
-            cmd.Run($@"{ExecFile} < {inFile} > {outFile} 2>&1");
+            cmd.Run($@"{ExecFile} < {inFile} > {outFile} 2>&1", "chcp 65001");
         }
     }
 }
